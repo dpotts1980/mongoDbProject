@@ -1,16 +1,16 @@
-var   mongoose = require("mongoose"),
+var mongoose = require("mongoose"),
       Schema   = mongoose.Schema;
   
-var   ArticleSchema = new Schema({
+var ArticleSchema = new Schema({
       title: {
       type: String,
       required: true
     },
 
-      summary: {
-        type: String,
-        required: true
-      },
+      // summary: {
+      //   type: String,
+      //   required: true
+      // },
     
       link: {
         type: String,
@@ -22,9 +22,9 @@ var   ArticleSchema = new Schema({
         default: Date.now
       },
       
-      comments: [{
+      note: [{
         type: Schema.Types.ObjectId,
-        ref: "Comment"
+        ref: "Note"
       }]
     });
     

@@ -13,11 +13,12 @@
 			</div>
 
 			<br/>
+			{{#each articles}}
 			<p id="title">{{article.title}}</p>
-			<p id="summary">{{article.summary}}</p>
+			{{!-- <p id="summary">{{article.summary}}</p> --}}
 			<a id="link" href={{article.link}}>More Information</a>
 			<br/><br/>
-
+			{{/each}}
 			<div>
 				<button class="btn btn-info" type="button" id="prev_article">Prev</button>
 				<button class="btn btn-info" type="button" id="next_article">Next</button>

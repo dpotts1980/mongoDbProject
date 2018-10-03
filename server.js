@@ -9,7 +9,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
-//var db = require("./models");
+var db = require("./models");
 
 var PORT = 3000;
 
@@ -21,13 +21,18 @@ app.use(logger("dev"));
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
 // Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
+app.use(express.static("./public"));
+
+app.engine(".hbs", exphbs({ extname: '.hbs', defaultLayout: "main" }));
+app.set("view engine", ".hbs");
 
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/mongoDbProject");
 
 // Routes
-
+app.get('/', function(req, res){
+  res.render('home');
+})
 // A get Route for scraping NYT Tech page
 app.get("/scrape", function(req, res) {
 
@@ -49,20 +54,23 @@ app.get("/scrape", function(req, res) {
         // then save the values for any "href" attributes that the child elements may have
         var link = storylink.attr("href");
 
+        //var summary = grab summary from website
+
         // Save these results in an object that we'll push into the results array we defined earlier
         results.push({
           title: title,
+          // summary: summary,
           link: link
         });
 
   });//end of each loop
-  /* db.Article.insertMany(results)
+   db.Article.insertMany(results)
     .then(function (docs) {
-      response.json(docs);
+      res.redirect('/articles');
     })
     .catch(function (err) {
-      response.status(500).send(err);
-    }) */
+      res.status(500).send(err);
+    })
 console.log(results);
 
 });
@@ -74,7 +82,7 @@ app.get("/articles", function(req, res) {
   db.Article.find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
+      res.render("index", {articles: dbArticle});
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
