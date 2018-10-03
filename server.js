@@ -57,11 +57,13 @@ app.get("/scrape", function(req, res) {
         //var summary = grab summary from website
 
         // Save these results in an object that we'll push into the results array we defined earlier
+       if (title) {
         results.push({
           title: title,
           // summary: summary,
           link: link
         });
+       }
 
   });//end of each loop
    db.Article.insertMany(results)
@@ -69,9 +71,10 @@ app.get("/scrape", function(req, res) {
       res.redirect('/articles');
     })
     .catch(function (err) {
+
       res.status(500).send(err);
     })
-console.log(results);
+// console.log(results);
 
 });
 });//end of scrape 
