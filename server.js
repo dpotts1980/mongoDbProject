@@ -128,7 +128,13 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoDbProject";
 
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
